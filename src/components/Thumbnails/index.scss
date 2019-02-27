@@ -21,33 +21,37 @@
   }
 
   &__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: calculateRem(16);
     list-style-type: none;
     padding: 0;
-    column-count: 4;
-    column-gap: calculateRem(16);
     width: 94%;
     max-width: calculateRem(1200);
     margin: auto;
 
     @include respond-to('medium') {
-      column-count: 2;
+      grid-template-columns: repeat(2, 1fr);
     }
 
     @include respond-to('small') {
-      column-count: 1;
+      grid-template-columns: repeat(1, 1fr);
     }
 
     &__card {
       $card: &;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background-color: #eee;
-      display: inline-flex;
       margin: 0 0 calculateRem(16);
       width: 100%;
       overflow: hidden;
       box-shadow: 0 calculateRem(3) calculateRem(10) 0 rgba($codGray, .2);
       transition: .2s;
-      min-height: calculateRem(200);
+      max-height: calculateRem(300);
+      border-radius: calculateRem(6);
 
       img {
         min-width: 100%;
