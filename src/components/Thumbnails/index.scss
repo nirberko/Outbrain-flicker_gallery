@@ -1,0 +1,139 @@
+@import "../../stylesheets/mixins";
+@import "../../stylesheets/colors";
+
+.Thumbnails {
+  padding: calculateRem(50);
+
+  @include respond-to('small') {
+    padding: calculateRem(14);
+  }
+
+  &__loader {
+    position: absolute;
+    top: calc(50% - #{calculateRem(60)});
+    left: calc(50% - #{calculateRem(60)});
+    border: calculateRem(16) solid #f3f3f3;
+    border-top: calculateRem(16) solid #3498db;
+    border-radius: 50%;
+    width: calculateRem(120);
+    height: calculateRem(120);
+    animation: spin 2s linear infinite;
+  }
+
+  &__list {
+    list-style-type: none;
+    padding: 0;
+    column-count: 4;
+    column-gap: calculateRem(16);
+    width: 94%;
+    max-width: calculateRem(1200);
+    margin: auto;
+
+    @include respond-to('medium') {
+      column-count: 2;
+    }
+
+    @include respond-to('small') {
+      column-count: 1;
+    }
+
+    &__card {
+      $card: &;
+      position: relative;
+      background-color: #eee;
+      display: inline-flex;
+      margin: 0 0 calculateRem(16);
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 calculateRem(3) calculateRem(10) 0 rgba($codGray, .2);
+      transition: .2s;
+      min-height: calculateRem(200);
+
+      img {
+        min-width: 100%;
+        min-height: 100%;
+        transition: .1s;
+        transform: scale(1.1);
+      }
+
+      &__details {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: rgba($codGray, 0.6);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        color: $white;
+        transition: .2s;
+        opacity: 0;
+        padding: calculateRem(14);
+        user-select: none;
+        overflow: hidden;
+
+        @include respond-to('small') {
+          pointer-events: none;
+        }
+
+        &__header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          flex: 1;
+          padding: 0 calculateRem(16);
+
+          h3 {
+            margin: 0;
+            cursor: pointer;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+
+          button {
+            background: transparent;
+            outline: none;
+            border: 0;
+            font-size: calculateRem(14);
+            opacity: 0.8;
+            cursor: pointer;
+            color: $white;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        &__dateTaken {
+          font-size: calculateRem(14);
+        }
+      }
+
+      &:hover {
+        box-shadow: 0 calculateRem(3) calculateRem(12) 0 rgba($codGray, .4);
+
+        img {
+          transform: scale(1.3);
+          filter: blur(0);
+        }
+
+        #{$card}__details {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
