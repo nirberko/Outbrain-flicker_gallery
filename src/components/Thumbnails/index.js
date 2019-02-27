@@ -16,18 +16,26 @@ const Loader = createElement('div', {
     }
 });
 
-const fetchThumbnails = (user_id) => {
-    let url = `https://api.flickr.com/services/feeds/photos_public.gne?format=json&tags=animales${user_id ? `&id=${user_id}` : ''}`;
+const fetchThumbnails = (userId) => {
+    let url = `https://api.flickr.com/services/feeds/photos_public.gne?format=json&tags=animales${userId ? `&id=${userId}` : ''}`;
 
     request(url).then(res => {
         Thumbnails.setState({
+            userId,
             thumbnails: res.items
         });
     });
 };
 
-const urlParams = new URLSearchParams(window.location.search);
-fetchThumbnails(urlParams.get('user_id'));
+const fetchThumbnailsWithQueryParam = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    fetchThumbnails(urlParams.get('user_id'));
+};
+
+fetchThumbnailsWithQueryParam();
+
+window.onpopstate = () => fetchThumbnailsWithQueryParam();
+
 
 const Thumbnail = item => {
     const ThumbnailCard = new Component();
