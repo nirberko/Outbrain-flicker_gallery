@@ -6,14 +6,14 @@
   width: 94%;
   max-width: calculateRem(1200);
   margin: auto;
-}
-
-.Thumbnails {
-  margin-top: calculateRem(20);
 
   @include respond-to('small') {
     padding: calculateRem(14);
   }
+}
+
+.Thumbnails {
+  margin-top: calculateRem(20);
 
   &__loader {
     position: absolute;
