@@ -1,7 +1,9 @@
 import Component     from "../../vDOM/Component";
 import createElement from "../../vDOM/createElement";
 import request       from '../../common/request';
-import dayjs         from 'dayjs';
+
+import Thumbnail     from '../Thumbnail';
+import Breadcrumb    from '../Breadcrumb';
 
 import './index.scss';
 
@@ -36,86 +38,21 @@ fetchThumbnailsWithQueryParam();
 
 window.onpopstate = () => fetchThumbnailsWithQueryParam();
 
-
-const Thumbnail = item => {
-    const ThumbnailCard = new Component();
-
-    const matchAuthor = item.author.match(/\("(.+)"\)/);
-
-    const header = (
-        createElement('header', {
-            attrs: {
-                class: 'Thumbnails__list__card__details__header'
-            },
-            children: [
-                createElement('h3', {
-                    events: {
-                        onclick: () => window.open(item.link, '_blank')
-                    },
-                    children: [item.title]
-                }),
-                createElement('button', {
-                    events: {
-                        onclick: (e) => {
-                            e.stopPropagation();
-                            history.pushState({}, null, `?user_id=${item.author_id}`);
-                            fetchThumbnails(item.author_id)
-                        }
-                    },
-                    children: [matchAuthor[1]]
-                })
-            ]
-        })
-    );
-
-    const footer = (
-        createElement('footer', {
-            attrs: {
-                class: 'Thumbnails__list__card__details__dateTaken'
-            },
-            children: [
-                dayjs(item.date_taken).format('DD MMMM YYYY')
-            ]
-        })
-    );
-
-    ThumbnailCard.render(() => (
-        createElement('div', {
-            attrs: {
-                class: 'Thumbnails__list__card'
-            },
-            children: [
-                createElement('img', {
-                    attrs: {
-                        src: item.media.m
-                    }
-                }),
-                createElement('article', {
-                    attrs: {
-                        class: 'Thumbnails__list__card__details'
-                    },
-                    children: [
-                        header,
-                        footer
-                    ]
-                })
-            ]
-        })
-    ));
-
-    return ThumbnailCard;
-};
-
-Thumbnails.render(({thumbnails}) => {
+Thumbnails.render(({thumbnails, userId}) => {
     let children =  [
         Loader
     ];
 
     let columns = [[],[],[],[]];
 
+    const onSelectAuthor = (author_id) => {
+        history.pushState({}, null, `?user_id=${author_id}`);
+        fetchThumbnails(author_id)
+    };
+
     let i = 0;
     thumbnails.forEach(item => {
-        columns[i].push(Thumbnail(item).render());
+        columns[i].push(Thumbnail(item, onSelectAuthor).render());
 
         i === 3 ? i = 0 : i++
     });
@@ -129,17 +66,25 @@ Thumbnails.render(({thumbnails}) => {
     }
 
     return (
-        createElement('div', {
+        createElement('main', {
             attrs: {
                 id: 'app',
-                class: 'Thumbnails',
+                class: 'Main'
             },
             children: [
-                createElement('ul', {
+                Breadcrumb(userId, onSelectAuthor),
+                createElement('div', {
                     attrs: {
-                        class: 'Thumbnails__list'
+                        class: 'Thumbnails',
                     },
-                    children
+                    children: [
+                        createElement('ul', {
+                            attrs: {
+                                class: 'Thumbnails__list'
+                            },
+                            children
+                        })
+                    ]
                 })
             ]
         })

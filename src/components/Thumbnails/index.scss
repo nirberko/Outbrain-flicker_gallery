@@ -1,8 +1,15 @@
 @import "../../stylesheets/mixins";
 @import "../../stylesheets/colors";
 
+.Main {
+  padding: calculateRem(20) calculateRem(50);
+  width: 94%;
+  max-width: calculateRem(1200);
+  margin: auto;
+}
+
 .Thumbnails {
-  padding: calculateRem(50);
+  margin-top: calculateRem(20);
 
   @include respond-to('small') {
     padding: calculateRem(14);
@@ -26,9 +33,6 @@
     column-gap: calculateRem(16);
     list-style-type: none;
     padding: 0;
-    width: 94%;
-    max-width: calculateRem(1200);
-    margin: auto;
 
     @include respond-to('medium') {
       grid-template-columns: repeat(2, 1fr);
