@@ -16,7 +16,9 @@ export default (userId, onSelectAuthor) => {
     );
 
     const main = breadCrumb('Thumbnails', () => {
-        history.back()
+        if (userId) {
+            history.back()
+        }
     });
 
 
